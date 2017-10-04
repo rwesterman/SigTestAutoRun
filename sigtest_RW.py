@@ -8,6 +8,7 @@ TODO: embed flag based on speed;
       check sigtest path, check files path
       add test mode
 
+# ver 0.93 adds use of a configuration file. This is not yet tested for dual-port datasets.
 # ver 0.92 fixes bug that caused default template name to appear regardless of user selection. 	  
 # ver 0.91 scans Program File (x86) for installed SigTest directories (crude and does not check for sigtest.exe)
 #     added method to enter path for SigTest if not in Program Files (x86)...
