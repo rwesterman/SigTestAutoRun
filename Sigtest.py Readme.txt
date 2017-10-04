@@ -1,0 +1,11 @@
+Python script to run all files in a directory through Sigtest.
+Script uses filters to search for correct files.  Search parameters
+include a file prefix, such as "1095", a speed delineator, such as
+"g3", a delineator for waveform type (clock or data), and file type
+.wfm" by default.  It is recommended that clock/data types be
+separated by underscores  (_d_, _clk_, etc).
+The script assumes Sigtest is located in {0}'.format(path_sigtest)
+\Sigtest.exe.  You can change this by editing the script with a text
+editor.  You will also need to know which template and directory
+the template is in.'
+

@@ -1,0 +1,5 @@
+Technology Directory,Template Name,Embedding? (n/y),Speed File Identifier,Data File Identifier,Clock ID,Beginning of File Name,File Type (must be wfm),Exclusion Filter
+C:\Program Files (x86)\SigTest 3.2.0\templates\pcie_cem_card_1_1,TX_ADD_CON.dat,n,Gen1,PET,none,Sys,wfm,N/A
+C:\Program Files (x86)\SigTest 3.2.0\templates\pcie_2_0_card,TX_ADD_CON_3.5DB.dat,n,Gen2,p0,none,Sys,wfm,N/A
+C:\Program Files (x86)\SigTest 3.2.0\templates\pcie_2_0_card,TX_ADD_CON_6.0DB.dat,n,Gen2,p1,none,Sys,wfm,N/A
+C:\Program Files (x86)\SigTest 3.2.0\templates\PCIE_3_0_CARD,PCIE_3_8GB_CEM.dat,n,Gen3,PET,none,Sys,wfm,N/A
