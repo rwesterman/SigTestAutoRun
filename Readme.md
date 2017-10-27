@@ -1,3 +1,5 @@
+This program is made for Python3.
+
 First, install Sigtest version 3.2.0 or 3.2.11
 Second, place Sigtest.py in the directory with your waveform files. It will walk through subfolders so place it at the base directory if you have many folders of waveforms.
 Then, edit configuration file SigConfig.csv in the following manner:

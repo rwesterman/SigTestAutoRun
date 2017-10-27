@@ -8,7 +8,6 @@ TODO: embed flag based on speed;
       check sigtest path, check files path
       add test mode
 
-# ver 0.93 adds use of a configuration file. This is not yet tested for dual-port datasets.
 # ver 0.92 fixes bug that caused default template name to appear regardless of user selection. 	  
 # ver 0.91 scans Program File (x86) for installed SigTest directories (crude and does not check for sigtest.exe)
 #     added method to enter path for SigTest if not in Program Files (x86)...
@@ -49,7 +48,7 @@ def run_sigtest (pairedList, filters, tmpltdir, tmplt, callsigtest, dpmethod=Fal
    timeToNow=0
    timeToGo=0
    paths=[]
-   print '  SigTest processing using {0}\\{1}\n'.format(tmpltdir,tmplt)
+   print('  SigTest processing using {0}\\{1}\n'.format(tmpltdir,tmplt))
    speed=filters[0]; dataid=filters[1]; clkid=filters[2]; prefix=filters[3]; suffix=filters[4]
    path=os.getcwd()
    logFile= prefix + "--" + tmplt.split('.')[0] + "--sigtest.tsv" 
@@ -85,10 +84,10 @@ def run_sigtest (pairedList, filters, tmpltdir, tmplt, callsigtest, dpmethod=Fal
       template=tmpltdir+"\\"+tmplt
       options.extend(["/t",template])    
       updateString =( 'Processing ' + str(counter+1).zfill(len(str(len(pairedList)))) + ' of ' + str(len(pairedList)) + ',  TimeSoFar ' + str(datetime.timedelta(seconds=int(timeToNow))) +'  EstTimeRemaining '+str(datetime.timedelta(seconds=int(timeToGo))))
-      print updateString,  #END COMMA NEEDED TO CONTINUE THE LINE FOR THE BACKSPACE
+      print(updateString, end=' ')  #END COMMA NEEDED TO CONTINUE THE LINE FOR THE BACKSPACE
       addBkspc='\b'
       totalBkspc=addBkspc*(2+len(updateString))
-      print totalBkspc,  #END COMMA NEEDED TO BACKSPACE
+      print(totalBkspc, end=' ')  #END COMMA NEEDED TO BACKSPACE
       fileStartTime=clock()
       try:
          if (dpmethod and addClk) or (not(dpmethod) and not(addClk)):
@@ -96,8 +95,8 @@ def run_sigtest (pairedList, filters, tmpltdir, tmplt, callsigtest, dpmethod=Fal
             #subprocess.call([callsigtest]) #Debug
             subprocess.call([callsigtest] + options)
          else:
-            print "  Skipping {0}, no clk".format(pair[0].replace(path,''))
-      except KeyboardInterrupt, e:
+            print("  Skipping {0}, no clk".format(pair[0].replace(path,'')))
+      except KeyboardInterrupt as e:
          exit('Ctrl-C, aborting')
       timeSingleFile=clock()-fileStartTime
       timeToNow=clock()-timeStartSigtestBatch
@@ -109,7 +108,7 @@ def run_sigtest (pairedList, filters, tmpltdir, tmplt, callsigtest, dpmethod=Fal
       combineOutputs(paths,logFile)
    timeTotalSigtestBatch=(clock()-timeStartSigtestBatch)
    #print '\n'
-   print 'Batch Job Time: {0}'.format(str(datetime.timedelta(seconds=int(timeTotalSigtestBatch))))
+   print('Batch Job Time: {0}'.format(str(datetime.timedelta(seconds=int(timeTotalSigtestBatch)))))
    return(len(pairedList)) 
 
 def combineOutputs(paths,filename):
@@ -157,7 +156,7 @@ def getFiles(filters=['','','','','*.wfm','']):
    if not(exclude):
       #print 'no exclude'
       exclude='qwerty'
-   print '\n  Searching with: {0}, {1}, {2}, {3}, {4}, and !{5}\n'.format(prefix,suffix,speed,dataid,clkid, exclude)
+   print('\n  Searching with: {0}, {1}, {2}, {3}, {4}, and !{5}\n'.format(prefix,suffix,speed,dataid,clkid, exclude))
    for (dir_current, subdirs, files) in os.walk('.'):
       for file in files:
          #if fnmatch.fnmatch(file, suffix) and file.startswith(prefix) and fnmatch.fnmatch(file, speedTemp) and(not(exclude in file)): 
@@ -173,7 +172,7 @@ def getFiles(filters=['','','','','*.wfm','']):
    matchedPairList=[]
    for dataFile in dataFileList:  #This is running after after both lists are complete.
       matchedPair=[]
-      print dataFile.split(dataid)
+      print(dataFile.split(dataid))
       basenamed=dataFile.split(dataid)[0]    #before id
       acqdata=dataFile.split(dataid)[1]      #after id
       matchedPair.append(dataFile)
@@ -184,21 +183,21 @@ def getFiles(filters=['','','','','*.wfm','']):
       if len(matchedPair)==1:  #wait until after the clock matching loop to see if something matched
          matchedPair.append('single')
       matchedPairList.append(matchedPair)
-   print '  Completed getFiles with {0} pairs'.format(len(matchedPairList))  #DEBUG
+   print('  Completed getFiles with {0} pairs'.format(len(matchedPairList)))  #DEBUG
    return(matchedPairList)
 
 
 def get_cmdline_file_input():
    fileSuffix='wfm'               #default, will not handle other file formats...
-   filePrefix=raw_input('Enter the beginning of the file name to match: ')
+   filePrefix=input('Enter the beginning of the file name to match: ')
    if not(filePrefix):
-      print'  No Prefix provided'
+      print('  No Prefix provided')
    return(filePrefix,fileSuffix)
 
 def get_config_file():
    """Get one line script from file entered by user. File template will have header line"""
 
-   usrFileDir=raw_input('Enter full path to configuration file, including filename: ')
+   usrFileDir=input('Enter full path to configuration file, including filename: ')
    with open(usrFileDir, 'r') as f:
       f.readline()
       config = f.readlines()
@@ -209,13 +208,13 @@ def get_cmdline_template():
    # set up some defaults
    reqTempDir='PCIE_3_0_CARD'
    reqTemp='PCIE_3_8GB_CEM.dat'
-   usrTempDir=raw_input('Enter the SigTest technology directory: ')
-   usrTemp=raw_input('Enter the SigTest template to use: ')
+   usrTempDir=input('Enter the SigTest technology directory: ')
+   usrTemp=input('Enter the SigTest template to use: ')
    if usrTempDir:
       reqTempDir=usrTempDir
    if usrTemp:
       reqTemp=usrTemp
-   tmp=raw_input('Does template use embedding? y/n  ')  #needed becuase of the "memory" feature
+   tmp=input('Does template use embedding? y/n  ')  #needed becuase of the "memory" feature
    if tmp=='y':
       embed=True
    else:
@@ -229,34 +228,34 @@ def get_filters_cmdline(method):
 #filters:  speed, dataid, clkid, prefix, suffix
 #used the append method, this is not the best and must be carefully tracked.
 #better would be  filters=[null]*6, or something similiar (fixed size, modify the location)
-   speedID=raw_input('Enter the speed file identifer: ')
+   speedID=input('Enter the speed file identifer: ')
    if not(speedID):
-      print'  No data identifier provided, assuming \'g3\''
+      print('  No data identifier provided, assuming \'g3\'')
       speedID='_g3_'
    filters.append(speedID)
-   dataID=raw_input('Enter the data file identifer: ')
+   dataID=input('Enter the data file identifer: ')
    if not(dataID):
       dataID=speedID
-      print'  No data identifier provided, assuming {0}'.format(speedID)
+      print('  No data identifier provided, assuming {0}'.format(speedID))
    filters.append(dataID)
    if method:              #Dual port mode selected
-      clckID=raw_input('Enter the clock file identifer: ')
+      clckID=input('Enter the clock file identifer: ')
       if not(clckID):
          clckID='Math2'
-         print'  No data identifier provided, assuming {0}'.format(clckID)
+         print('  No data identifier provided, assuming {0}'.format(clckID))
    else:
       clckID='none'
    filters.append(clckID)
    fileSuffix='wfm'               #default, will not handle other file formats...
-   filePrefix=raw_input('Enter the beginning of the file name to match: ')
+   filePrefix=input('Enter the beginning of the file name to match: ')
    if not(filePrefix):
-      print'  No Prefix provided'
+      print('  No Prefix provided')
       filePrefix='none'
    filters.append(filePrefix)
    filters.append(fileSuffix)
-   exclude=raw_input('Enter an exclusion filter: ')
+   exclude=input('Enter an exclusion filter: ')
    if not(exclude):
-      print'  No exclusion identifier provided, assuming none'
+      print('  No exclusion identifier provided, assuming none')
       exclude=''
    filters.append(exclude)
    #print 'Filter List: num',len(filters), filters[3], filters[4], filters[0], filters[1], filters[2]   #DEBUG
@@ -265,7 +264,7 @@ def get_filters_cmdline(method):
 
 def get_cmdline_method(sigtestlocal):
    method=False
-   userinput=raw_input('Anaylize with Dual-Port?  (y/n) ')
+   userinput=input('Anaylize with Dual-Port?  (y/n) ')
    if userinput=='y':
       method=True
    return(method)
@@ -286,10 +285,10 @@ def find_sigtest():
          vers.append(dir)
    numVers=len(vers)
    if numVers>1:  #need to selecte
-      print "Mulitple SigTest versions installed"
+      print("Mulitple SigTest versions installed")
       for idx,ver in enumerate(vers):
-         print idx, " -> ", ver.split()[1].strip('\\')
-      sigSelect=raw_input("Choose a version: ")
+         print(idx, " -> ", ver.split()[1].strip('\\'))
+      sigSelect=input("Choose a version: ")
       #test to see if input is an integer
       try:  
          sigSelect=int(sigSelect)
@@ -305,22 +304,22 @@ def find_sigtest():
       CallSigTest=progFiles+'\\'+vers[sigSelect]+'SigTest.exe'
    else:    #didn't find a version installed
       #exit('No SigTest installation detected in Program Files (x86)')
-      CallSigTest=raw_input('Input the path to SigTest.exe: ')
+      CallSigTest=input('Input the path to SigTest.exe: ')
       CallSigTest+=('\\SigTest.exe')
    return(CallSigTest)
 
 #def help(sigtestlocal):  #NEED TO ADD
 def help():  #NEED TO ADD
-   print'\nThis command line based utlity will batch-process waveform files in the local directory: {0}'.format(os.getcwd())
-   print'It works with either Data-Only or Dual-Port modes.'  #does not support both in a single file, SE files
-   print"You'll need several things to start a run:"
-   print"Sigtest Technology directory & Template File, \nIf it's a Dual-Port template, and if it does embedding (faster than Gen2).\n",
-   print"For Dual-Port analysis, the data and clock files must be name the same \nexcept for the Data vs. Clock file identifier.",
-   print"An example would be Project_Slot##_Speed_Lane##_D_Sample#.wfm & \nProject_Slot##_Speed_Lane##_C_Sample#.wfm",
-   print"When entering the data, clock, and speed filters, it's recommended to \ninclude the separators on boths sides,",
-   print"such as _D_ or _Data_, _Clk_ or _Gen3_, etc.  This makes the parsing simpler."
-   print"To use Tektronix automated naming, _Math1 and _Math2 can be used as data and clock file identifiers.\n\n"
-   print"This has been tested to work on Win7 and Win8. It fails on Win10 after some updates have been applied."
+   print('\nThis command line based utlity will batch-process waveform files in the local directory: {0}'.format(os.getcwd()))
+   print('It works with either Data-Only or Dual-Port modes.')  #does not support both in a single file, SE files
+   print("You'll need several things to start a run:")
+   print("Sigtest Technology directory & Template File, \nIf it's a Dual-Port template, and if it does embedding (faster than Gen2).\n", end=' ')
+   print("For Dual-Port analysis, the data and clock files must be name the same \nexcept for the Data vs. Clock file identifier.", end=' ')
+   print("An example would be Project_Slot##_Speed_Lane##_D_Sample#.wfm & \nProject_Slot##_Speed_Lane##_C_Sample#.wfm", end=' ')
+   print("When entering the data, clock, and speed filters, it's recommended to \ninclude the separators on boths sides,", end=' ')
+   print("such as _D_ or _Data_, _Clk_ or _Gen3_, etc.  This makes the parsing simpler.")
+   print("To use Tektronix automated naming, _Math1 and _Math2 can be used as data and clock file identifiers.\n\n")
+   print("This has been tested to work on Win7 and Win8. It fails on Win10 after some updates have been applied.")
    #exit()
    return()
 
@@ -330,17 +329,17 @@ def run_me():
    #inputFlags=parseInput();
    printVerString='sigtest.py version 0.92';
    callSigTest=find_sigtest() #find normally installed versions
-   print printVerString
-   print callSigTest
+   print(printVerString)
+   print(callSigTest)
    method=get_cmdline_method(callSigTest)                     #Get analysis method
 
-   usrFileTest = raw_input("Are you using a config file? (y/n): ")
+   usrFileTest = input("Are you using a config file? (y/n): ")
    if usrFileTest == 'y':
       config = get_config_file()
       for line in range(len(config)):
-         print config[line]
+         print(config[line])
          params = config[line].split(',')
-         print params
+         print(params)
          tmpltdir = params[0]
          tmplt = params[1]
          if (params[2] == 'y' or params [2] == 'Y'):
@@ -357,7 +356,7 @@ def run_me():
       #Setup Filters and template directories here
    else:
       tmpltdir,tmplt,embed=get_cmdline_template()           #Get user input for the template
-      print tmpltdir, tmplt
+      print(tmpltdir, tmplt)
       filters = get_filters_cmdline(method)
 
    #Need to assign config settings for each element in the array (minus element 0, because it is expected to be a header)
